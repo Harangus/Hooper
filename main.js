@@ -3,6 +3,9 @@ let ctx = c.getContext("2d");
 let gameSpeed = setInterval(gameLoop, 1000 / 90);
 let background = new Image();
 let movingSpeed = 1;
+let framesBetweenSprites = 22.5;
+let actualFrames = 0;
+let currentSprite = 0;
 background.src =
   "https://media.istockphoto.com/id/1333010525/vector/simple-flat-pixel-art-illustration-of-cartoon-outdoor-landscape-background-pixel-arcade.jpg?s=612x612&w=0&k=20&c=uTGqB9fhmjzaNd17EGRHYU04_70K7a3M8ilRoJjDwtY=";
 let backgroundPosition = { x: 0, y: 0 };
@@ -12,7 +15,7 @@ background2.src =
 
 let background2Position = { x: 1000, y: 0 };
 
-let player = new Character(80, 80, { x: 200, y: 100 });
+let player = new Character(105, 87, { x: 200, y: 100 });
 player.drawCharacter();
 
 function gameLoop() {
@@ -37,6 +40,7 @@ function gameLoop() {
   if (player.jumpEnabled) {
     jump();
   }
+  capyAnimation();
   player.drawCharacter();
 
   backgroundPosition.x -= movingSpeed;
@@ -48,6 +52,31 @@ function gameLoop() {
     background2Position.x = 1000;
   }
   movingSpeed += 0.001;
+  if (framesBetweenSprites > 5) framesBetweenSprites -= 0.001;
+}
+
+function capyAnimation()
+{
+  actualFrames++;
+  if (actualFrames >= framesBetweenSprites) {
+    actualFrames = 0;
+    switch (currentSprite) {
+      case 0:
+        player.sprite.src = './Sprites/capyStand.png';
+        break;
+      case 1:
+        player.sprite.src = './Sprites/capyLeftLeg.png';
+        break;
+      case 2:
+        player.sprite.src = './Sprites/capyStand.png';
+        break;
+      case 3:
+        player.sprite.src = './Sprites/capyRightLeg.png';
+        break;
+    }
+    currentSprite++;
+    if (currentSprite > 3) currentSprite = 0;
+  }
 }
 
 function gravity() {

@@ -11,7 +11,7 @@ class Character {
     this.jumpedDistance = 0;
     this.jumpCompleted = false;
     this.sprite = new Image();
-    this.sprite.src = 'https://seeklogo.com/images/D/dinosaur-game-logo-2723F385F0-seeklogo.com.png';
+    this.sprite.src = './Sprites/capyStand.png';
   }
 
   drawCharacter() {
