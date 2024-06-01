@@ -1,8 +1,10 @@
 let c = document.getElementById("gameCanvas");
 let ctx = c.getContext("2d");
-let gameSpeed = setInterval(gameLoop, 1000 / 90);
+let score = document.getElementById("score");
+let gameSpeed = setInterval(gameLoop, 1000 / 60);
 let background = new Image();
 let movingSpeed = 1;
+let currentScore = 0;
 let framesBetweenSprites = 22.5;
 let actualFrames = 0;
 let currentSprite = 0;
@@ -16,6 +18,14 @@ background2.src =
 let background2Position = { x: 1000, y: 0 };
 
 let player = new Character(105, 87, { x: 200, y: 100 });
+enemySpeed = 2;
+let enemies = new Array();
+enemies.push(new Character(50, 50, {x: 900, y: 360}));
+enemies.push(new Character(50, 50, {x: 1100, y: 360}));
+enemies.forEach((enemy) => {
+  enemy.sprite.src = './Sprites/fireBall.png';
+});
+
 player.drawCharacter();
 
 function gameLoop() {
@@ -40,8 +50,11 @@ function gameLoop() {
   if (player.jumpEnabled) {
     jump();
   }
+  countScore();
   capyAnimation();
   player.drawCharacter();
+  drawEnemies();
+  checkCollision();
 
   backgroundPosition.x -= movingSpeed;
   background2Position.x -= movingSpeed;
@@ -51,27 +64,62 @@ function gameLoop() {
   if (background2Position.x < -999) {
     background2Position.x = 1000;
   }
-  movingSpeed += 0.001;
+  if (movingSpeed < 10) {
+    movingSpeed += 0.001;
+    enemySpeed += 0.001;
+  }
   if (framesBetweenSprites > 5) framesBetweenSprites -= 0.001;
 }
 
-function capyAnimation()
+function drawEnemies() {
+  enemies.forEach((enemy) => {
+    enemy.characterPosition.x -= enemySpeed;
+    enemy.drawCharacter();
+  });
+}
+
+function checkCollision()
 {
+  enemies.forEach((enemy, index) => {
+    if (
+      enemy.characterPosition.x > player.characterPosition.x &&
+      enemy.characterPosition.x < player.characterPosition.x + enemy.width &&
+      enemy.characterPosition.y > player.characterPosition.y &&
+      enemy.characterPosition.y < player.characterPosition.y + enemy.height
+    ) {
+      alert("Game over! Capy is Dead :(");
+    }
+
+    if (enemy.characterPosition.x < 0 && index == 0) {
+      enemy.characterPosition.x = 1000 + getRandomInt(150, 800);
+    }
+    if (enemy.characterPosition.x < 0 && index == 1) {
+      enemy.characterPosition.x = 1000 + getRandomInt(enemies[0].characterPosition.x + 150, 800);
+    }
+  });
+}
+
+function countScore() {
+  currentScore += 0.001;
+  score.innerHTML = "Score: " + Math.floor(currentScore);
+}
+
+function capyAnimation() {
   actualFrames++;
   if (actualFrames >= framesBetweenSprites) {
     actualFrames = 0;
     switch (currentSprite) {
       case 0:
-        player.sprite.src = './Sprites/capyStand.png';
+        player.sprite.src = "./Sprites/capyStand.png";
         break;
       case 1:
-        player.sprite.src = './Sprites/capyLeftLeg.png';
+        player.sprite.src = "./Sprites/capyLeftLeg.png";
         break;
       case 2:
-        player.sprite.src = './Sprites/capyStand.png';
+        player.sprite.src = "./Sprites/capyStand.png";
         break;
       case 3:
-        player.sprite.src = './Sprites/capyRightLeg.png';
+        player.sprite.src = "./Sprites/capyRightLeg.png";
         break;
     }
     currentSprite++;
@@ -95,13 +143,19 @@ function jump() {
   if (player.jumpedDistance < player.jumpPower) {
     player.characterPosition.y -= player.velocity + player.jumpPower / 30;
     player.jumpedDistance += player.velocity + player.jumpPower / 30;
-    player.velocity -= 1;
+    if (player.velocity > 0) player.velocity -= 1;
   } else {
     player.jumpEnabled = false;
     player.velocity = 0;
     player.gravityEnabled = true;
     player.jumpedDistance = 0;
   }
+}
+
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
 }
 
 document.addEventListener("keydown", function (event) {

@@ -6,7 +6,7 @@ class Character {
     this.velocity = 0;
     this.weight = 0.1;
     this.gravityEnabled = true;
-    this.jumpPower = 90;
+    this.jumpPower = 180;
     this.jumpEnabled = false;
     this.jumpedDistance = 0;
     this.jumpCompleted = false;
