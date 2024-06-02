@@ -96,10 +96,10 @@ function checkCollision()
 {
   enemies.forEach((enemy, index) => {
     if (
-      enemy.characterPosition.x > player.characterPosition.x &&
-      enemy.characterPosition.x < player.characterPosition.x + enemy.width &&
+      enemy.characterPosition.x > player.characterPosition.x - 50 &&
+      enemy.characterPosition.x < player.characterPosition.x + enemy.width * 1.6 &&
       enemy.characterPosition.y > player.characterPosition.y &&
-      enemy.characterPosition.y < player.characterPosition.y + enemy.height
+      enemy.characterPosition.y < player.characterPosition.y + enemy.height * 1.74
     ) {
       alert("Game over! Capy is Dead :(");
     }
@@ -113,10 +113,10 @@ function checkCollision()
   });
 
   if (
-    colectible.x > player.characterPosition.x &&
-    colectible.x < player.characterPosition.x + colectible.width &&
+    colectible.x > player.characterPosition.x  - 50 &&
+    colectible.x < player.characterPosition.x + colectible.width * 1.6 &&
     colectible.y > player.characterPosition.y &&
-    colectible.y < player.characterPosition.y + colectible.height
+    colectible.y < player.characterPosition.y + colectible.height * 1.74
   ) {
     colectible.x = getRandomInt(1100, 2000);
     currentScore += 10;
