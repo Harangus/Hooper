@@ -8,6 +8,18 @@ let currentScore = 0;
 let framesBetweenSprites = 22.5;
 let actualFrames = 0;
 let currentSprite = 0;
+let colectible = {
+  image : new Image(),
+  x : 800,
+  y : 200,
+  width : 50,
+  height : 50,
+  drawCharacter : function() {
+    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+  }
+};
+colectible.image.src = "./Sprites/orange.png";
+
 background.src =
   "https://media.istockphoto.com/id/1333010525/vector/simple-flat-pixel-art-illustration-of-cartoon-outdoor-landscape-background-pixel-arcade.jpg?s=612x612&w=0&k=20&c=uTGqB9fhmjzaNd17EGRHYU04_70K7a3M8ilRoJjDwtY=";
 let backgroundPosition = { x: 0, y: 0 };
@@ -54,6 +66,7 @@ function gameLoop() {
   capyAnimation();
   player.drawCharacter();
   drawEnemies();
+  colectible.drawCharacter();
   checkCollision();
 
   backgroundPosition.x -= movingSpeed;
@@ -67,6 +80,7 @@ function gameLoop() {
   if (movingSpeed < 10) {
     movingSpeed += 0.001;
     enemySpeed += 0.001;
+    colectible.x -= enemySpeed;
   }
   if (framesBetweenSprites > 5) framesBetweenSprites -= 0.001;
 }
@@ -97,6 +111,18 @@ function checkCollision()
       enemy.characterPosition.x = 1000 + getRandomInt(enemies[0].characterPosition.x + 150, 800);
     }
   });
+
+  if (
+    colectible.x > player.characterPosition.x &&
+    colectible.x < player.characterPosition.x + colectible.width &&
+    colectible.y > player.characterPosition.y &&
+    colectible.y < player.characterPosition.y + colectible.height
+  ) {
+    colectible.x = getRandomInt(1100, 2000);
+    currentScore += 10;
+  }
+
+  if (colectible.x < 0) colectible.x = getRandomInt(1100, 2000);
 }
 
 function countScore() {
