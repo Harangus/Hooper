@@ -21,7 +21,7 @@ class Character {
       this.width,
       this.height
     );*/
-    ctx.strokeRect(this.characterPosition.x, this.characterPosition.y, this.width, this.height);
+    //ctx.strokeRect(this.characterPosition.x, this.characterPosition.y, this.width, this.height);
     ctx.drawImage(this.sprite, this.characterPosition.x, this.characterPosition.y, this.width, this.height);
   }
 }

@@ -33,7 +33,7 @@ let player = new Character(105, 87, { x: 200, y: 100 });
 enemySpeed = 2;
 let enemies = new Array();
 enemies.push(new Character(50, 50, {x: 900, y: 360}));
-enemies.push(new Character(50, 50, {x: 1100, y: 360}));
+enemies.push(new Character(50, 50, {x: 1200, y: 360}));
 enemies.forEach((enemy) => {
   enemy.sprite.src = './Sprites/fireBall.png';
 });
@@ -97,7 +97,7 @@ function checkCollision()
   enemies.forEach((enemy, index) => {
     if (
       enemy.characterPosition.x > player.characterPosition.x - 50 &&
-      enemy.characterPosition.x < player.characterPosition.x + enemy.width * 1.6 &&
+      enemy.characterPosition.x < player.characterPosition.x + enemy.width * 1.2 &&
       enemy.characterPosition.y > player.characterPosition.y &&
       enemy.characterPosition.y < player.characterPosition.y + enemy.height * 1.74
     ) {
@@ -108,7 +108,7 @@ function checkCollision()
       enemy.characterPosition.x = 1000 + getRandomInt(150, 800);
     }
     if (enemy.characterPosition.x < 0 && index == 1) {
-      enemy.characterPosition.x = 1000 + getRandomInt(enemies[0].characterPosition.x + 150, 800);
+      enemy.characterPosition.x = 1000 + getRandomInt(enemies[0].characterPosition.x + 300, 800);
     }
   });
 
